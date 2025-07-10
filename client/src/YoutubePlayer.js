@@ -14,16 +14,16 @@ const YoutubePlayer = ({ roomId, isHost }) => {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
   socket.on("receive-action", (action) => {
-    if (!playerRef.current && action.type !== "changeVideo") return;
+    console.log("Guest received action:", action);
 
     if (action.type === "changeVideo") {
       setVideoId(action.videoId);
-    } else if (action.type === "play") {
+    } else if (action.type === "play" && playerRef.current) {
       playerRef.current.seekTo(action.time, true);
       playerRef.current.playVideo();
-    } else if (action.type === "pause") {
+    } else if (action.type === "pause" && playerRef.current) {
       playerRef.current.seekTo(action.time, true);
       playerRef.current.pauseVideo();
     }

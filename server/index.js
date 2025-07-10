@@ -52,13 +52,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new-video', ({ roomId, videoId }) => {
-    const cleanId = extractVideoId(videoId);
-    if (cleanId) {
-      io.to(roomId).emit('receive-action', { type: 'changeVideo', videoId: cleanId });
-    } else {
-      socket.emit('error', 'Invalid YouTube URL');
-    }
+  console.log(`Sending new video to room ${roomId}: ${videoId}`);
+  io.to(roomId).emit('receive-action', { type: 'changeVideo', videoId });
   });
+
 
   socket.on('disconnecting', () => {
     const roomsUserWasIn = [...socket.rooms].filter(r => r !== socket.id);

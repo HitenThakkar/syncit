@@ -50,7 +50,8 @@ function App() {
   const handleVideoSubmit = () => {
   const videoId = extractVideoId(videoUrl);
   if (videoId) {
-    socket.emit("new-video", { roomId, videoId });  // make sure this fires
+    socket.emit("new-video", { roomId, videoId });
+    console.log("Host emitted videoId:", videoId); 
   } else {
     alert("Invalid YouTube URL");
   }
