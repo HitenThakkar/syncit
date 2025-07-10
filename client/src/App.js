@@ -88,6 +88,7 @@ function App() {
             )}
 
             <YouTubePlayer roomId={roomId} isHost={isHost} />
+
           </div>
         ) : (
           <div>

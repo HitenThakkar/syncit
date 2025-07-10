@@ -15,8 +15,10 @@ const YoutubePlayer = ({ roomId, isHost }) => {
   };
 
 useEffect(() => {
-  socket.on("receive-action", (action) => {
-    console.log("Guest received action:", action);
+  if (!socket) return;
+
+  const handler = (action) => {
+    console.log(" Guest received action:", action);
 
     if (action.type === "changeVideo") {
       setVideoId(action.videoId);
@@ -27,10 +29,12 @@ useEffect(() => {
       playerRef.current.seekTo(action.time, true);
       playerRef.current.pauseVideo();
     }
-  });
+  };
 
-  return () => socket.off("receive-action");
-}, []);
+  socket.on("receive-action", handler);
+  return () => socket.off("receive-action", handler);
+}, [socket]);
+
 
 
   const handlePlay = () => {
