@@ -15,23 +15,23 @@ const YoutubePlayer = ({ roomId, isHost }) => {
   };
 
   useEffect(() => {
-    const handleAction = (action) => {
-      if (action.type === 'changeVideo') {
-        setVideoId(action.videoId);  // This will trigger re-render
-      } else if (playerRef.current) {
-        if (action.type === 'play') {
-          playerRef.current.seekTo(action.time, true);
-          playerRef.current.playVideo();
-        } else if (action.type === 'pause') {
-          playerRef.current.seekTo(action.time, true);
-          playerRef.current.pauseVideo();
-        }
-      }
-    };
+  socket.on("receive-action", (action) => {
+    if (!playerRef.current && action.type !== "changeVideo") return;
 
-    socket.on('receive-action', handleAction);
-    return () => socket.off('receive-action', handleAction);
-  }, [socket]);
+    if (action.type === "changeVideo") {
+      setVideoId(action.videoId);
+    } else if (action.type === "play") {
+      playerRef.current.seekTo(action.time, true);
+      playerRef.current.playVideo();
+    } else if (action.type === "pause") {
+      playerRef.current.seekTo(action.time, true);
+      playerRef.current.pauseVideo();
+    }
+  });
+
+  return () => socket.off("receive-action");
+}, []);
+
 
   const handlePlay = () => {
     if (!playerRef.current) return;

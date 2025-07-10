@@ -48,13 +48,13 @@ function App() {
 
 
   const handleVideoSubmit = () => {
-    const videoId = extractVideoId(videoUrl);
-    if (videoId) {
-      socket.emit("new-video", { roomId, videoId });
-    } else {
-      alert("Invalid YouTube URL");
-    }
-  };
+  const videoId = extractVideoId(videoUrl);
+  if (videoId) {
+    socket.emit("new-video", { roomId, videoId });  // make sure this fires
+  } else {
+    alert("Invalid YouTube URL");
+  }
+};
 
   useEffect(() => {
     socket.on("user-count", (count) => {
